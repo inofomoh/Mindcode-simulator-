@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MindCode Simulator</title>
+  <style>
+    body { font-family: sans-serif; background: #f0f0f0; padding: 20px; }
+    .container { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+    h1 { text-align: center; color: #333; }
+    .btn { background: #00b894; color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-size: 16px; cursor: pointer; margin-top: 20px; }
+    .locked { opacity: 0.5; pointer-events: none; }
+    .unlocked { color: green; font-weight: bold; text-align: center; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>MindCode Satellite Simulator</h1>
+    <p>Welcome to the live simulator. To unlock the full agent logic and control system, please make a one-time payment.</p>
+
+    <button class="btn" onclick="payWithPaystack()">Unlock Full Access - ₦5,000</button>
+
+    <div id="status"></div>
+
+    <div id="features" class="locked">
+      <h2>🔐 Premium Agent Controls (Locked)</h2>
+      <ul>
+        <li>View full satellite agent JSON logic</li>
+        <li>Real-time sensor updates + actions</li>
+        <li>Export agent configuration</li>
+        <li>Run full agent simulation with logic tree</li>
+      </ul>
+    </div>
+
+    <div class="unlocked" id="unlockMessage" style="display: none;">
+      ✅ Full Agent Simulator Unlocked!<br>
+      Need help? WhatsApp: +2347044618291
+    </div>
+  </div>
+
+  <script src="https://js.paystack.co/v1/inline.js"></script>
+  <script>
+    function payWithPaystack() {
+      let handler = PaystackPop.setup({
+        key: 'pk_test_aada79f897629222d7b87eb9f01ac0d9674eda1d',
+        email: 'user@mindcode.ai',
+        amount: 500000, // in kobo = ₦5,000
+        currency: 'NGN',
+        ref: '' + Math.floor((Math.random() * 1000000000) + 1),
+        callback: function(response) {
+          document.getElementById('features').classList.remove('locked');
+          document.getElementById('features').classList.add('unlocked');
+          document.getElementById('unlockMessage').style.display = 'block';
+          document.getElementById('status').innerHTML = '<p style="color: green;">Payment successful! Ref: ' + response.reference + '</p>';
+        },
+        onClose: function() {
+          alert('Transaction was not completed.');
+        }
+      });
+      handler.openIframe();
+    }
+  </script>
+</body>
+</html>
